@@ -1,7 +1,7 @@
 # tests/test_preprocessing.py
 import pandas as pd
 
-from ml_project.preprocessing import remove_missing_values, validate_columns
+from ml_housing.preprocessing import remove_missing_values, validate_columns
 
 
 def test_validate_columns_success():

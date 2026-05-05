@@ -1,11 +1,6 @@
-from src.predict import predict_one
+import pandas as pd
+from ml_housing.preprocessing import validate_columns
 
-
-def test_predict_one_returns_number():
-    sample = {
-        "age": 0.05,
-        "sex": 0.05,
-        "bmi": 0.06,
-    }
-    result = predict_one(sample)
-    assert isinstance(result, (int, float))
+def test_validate_columns_returns_bool():
+    df = pd.DataFrame({"age": [50], "bmi": [0.06], "bp": [0.02]})
+    assert validate_columns(df) is True

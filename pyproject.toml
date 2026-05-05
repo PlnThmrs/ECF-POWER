@@ -1,11 +1,22 @@
+# Configuration RUFF
 [tool.ruff]
 line-length = 88
 target-version = "py310"
-
 [tool.ruff.lint]
 select = ["E", "F", "I", "B"]
+ignore = []
 
 # E : règles pycodestyle
 # F : erreurs pyflakes
 # I : tri des imports
 # B : bonnes pratiques bugbear
+
+# Configuration BLACK
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+pythonpath = ["src"]
