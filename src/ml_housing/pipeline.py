@@ -1,11 +1,12 @@
-from pathlib import Path
 import json
+from pathlib import Path
+
 import joblib
 
 from ml_housing.data import load_housing_data
+from ml_housing.evaluate import evaluate_model
 from ml_housing.features import split_features_target, split_train_test
 from ml_housing.train import train_model
-from ml_housing.evaluate import evaluate_model
 
 
 def run_pipeline(artifacts_dir: str = "artifacts") -> dict:

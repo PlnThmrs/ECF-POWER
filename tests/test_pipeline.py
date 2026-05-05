@@ -1,20 +1,20 @@
-# tests/test_preprocessing.py
-import pandas as pd
+import sys
+from pathlib import Path
 
-from ml_housing.preprocessing import remove_missing_values, validate_columns
+from ml_housing.pipeline import run_pipeline
 
-
-def test_validate_columns_success():
-    df = pd.DataFrame({"age": [50], "bmi": [0.06], "bp": [0.02]})
-    assert validate_columns(df) is True
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 
-def test_validate_columns_failure():
-    df = pd.DataFrame({"age": [50], "bmi": [0.06]})
-    assert validate_columns(df) is False
 
+def test_pipeline_returns_metrics(tmp_path):
+    metrics = run_pipeline(artifacts_dir=str(tmp_path))
 
-def test_remove_missing_values():
-    df = pd.DataFrame({"age": [50, None], "bmi": [0.06, 0.02], "bp": [0.02, 0.01]})
-    cleaned = remove_missing_values(df)
-    assert len(cleaned) == 1
+    assert "mae" in metrics
+    assert "rmse" in metrics
+    assert "r2" in metrics
+    assert metrics["mae"] > 0
+    assert -1 <= metrics["r2"] <= 1
+    assert (tmp_path / "model.joblib").exists()
+    assert (tmp_path / "metrics.json").exists()
