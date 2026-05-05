@@ -1,0 +1,8 @@
+pytest
+ruff
+black
+bandit
+pandas
+scikit-learn
+fastapi
+uvicorn
