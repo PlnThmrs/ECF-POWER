@@ -1,0 +1,19 @@
+# Environnements Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Données et modèles locaux
+data/
+models/
+*.pkl
+*.joblib
+
+# Secrets
+.env
+*.key
+
+# Système / IDE
+.vscode/
+.DS_Store
