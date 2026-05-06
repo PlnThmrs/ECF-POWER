@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-from ml_housing.pipeline import run_pipeline
+from ml_conso.pipeline import run_pipeline
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))

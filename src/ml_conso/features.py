@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-TARGET_COLUMN = "MedHouseVal"
+TARGET_COLUMN = "evo_conso_scaled"
 
 
 def split_features_target(df: pd.DataFrame):

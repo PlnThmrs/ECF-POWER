@@ -3,10 +3,10 @@ from pathlib import Path
 
 import joblib
 
-from ml_housing.data import load_housing_data
-from ml_housing.evaluate import evaluate_model
-from ml_housing.features import split_features_target, split_train_test
-from ml_housing.train import train_model
+from ml_conso.data import load_df_preprocessed
+from ml_conso.evaluate import evaluate_model
+from ml_conso.features import split_features_target, split_train_test
+from ml_conso.train import train_model
 
 
 def run_pipeline(artifacts_dir: str = "artifacts") -> dict:
@@ -14,7 +14,7 @@ def run_pipeline(artifacts_dir: str = "artifacts") -> dict:
     artifacts_path = Path(artifacts_dir)
     artifacts_path.mkdir(parents=True, exist_ok=True)
 
-    df = load_housing_data()
+    df = load_df_preprocessed()
     X, y = split_features_target(df)
     X_train, X_test, y_train, y_test = split_train_test(X, y)
 

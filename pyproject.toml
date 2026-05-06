@@ -8,3 +8,6 @@ src = ["src", "tests"]
 [tool.ruff.lint]
 select = ["E", "F", "I", "B"]
 ignore = []
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
