@@ -38,7 +38,6 @@ with col2:
 
 
 if st.button("Calculer l'estimation", type="primary"):
-
     payload = {
         "MoyenneConso": moyenne_conso,
         "AgeBat": age_bat,
