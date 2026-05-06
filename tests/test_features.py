@@ -8,7 +8,6 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 
-
 def test_split_features_target():
     df = load_df_preprocessed()
     X, y = split_features_target(df)

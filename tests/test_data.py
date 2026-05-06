@@ -7,7 +7,6 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 
-
 def test_load_conso_data_not_empty():
     df = load_df_preprocessed()
     assert not df.empty
