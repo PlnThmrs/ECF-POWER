@@ -1,6 +1,6 @@
 import pandas as pd
 
-from ml_conso.preprocessing import remove_missing_values
+from training.preprocessing import remove_missing_values
 
 
 def test_remove_missing_values():

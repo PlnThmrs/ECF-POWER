@@ -3,10 +3,10 @@ from pathlib import Path
 
 import joblib
 
-from ml_conso.data import load_df_preprocessed
-from ml_conso.evaluate import evaluate_model
-from ml_conso.features import split_features_target, split_train_test
-from ml_conso.train import train_model
+from common.features import split_features_target, split_train_test
+from training.data import load_df_preprocessed
+from training.evaluate import evaluate_model
+from training.train import train_model
 
 
 def run_pipeline(
