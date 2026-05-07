@@ -27,12 +27,6 @@ dev = [
     "requests-mock",
     "black",
     "bandit",
-    "pandas"
-    "scikit-learn",
-    "joblib",
-    "fastapi",
-    "uvicorn",
-    "streamlit",
 ]
 
 [tool.setuptools.packages.find]
