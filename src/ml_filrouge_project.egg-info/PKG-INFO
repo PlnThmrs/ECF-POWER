@@ -1,0 +1,33 @@
+Metadata-Version: 2.4
+Name: ml_filrouge_project
+Version: 0.1.0
+Summary: Pipeline de prédiction de consommation énergétique
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: pandas
+Requires-Dist: scikit-learn
+Requires-Dist: joblib
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: ipykernel; extra == "dev"
+Requires-Dist: httpx; extra == "dev"
+Requires-Dist: requests-mock; extra == "dev"
+
+[![CI Pipeline](https://github.com/Speedyv01/ml-filrouge-project/actions/workflows/ci.yml/badge.svg)](https://github.com/Speedyv01/ml-filrouge-project/actions/workflows/ci.yml)
+
+# Projet ML industrialisé
+
+## Installation
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+## Tests
+pytest -v
+
+## Qualité
+ruff check .
+black --check .
+bandit -r src -ll

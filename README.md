@@ -1,3 +1,5 @@
+[![CI Pipeline](https://github.com/Speedyv01/ml-filrouge-project/actions/workflows/ci.yml/badge.svg)](https://github.com/Speedyv01/ml-filrouge-project/actions/workflows/ci.yml)
+
 # Projet ML industrialisé
 
 ## Installation

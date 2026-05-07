@@ -1,6 +1,14 @@
 import requests
 import streamlit as st
 
+
+def call_api(payload: dict) -> float:
+    """Appelle l'API FastAPI et retourne la prédiction."""
+    response = requests.post("http://127.0.0.1:8000/predict", json=payload, timeout=5)
+    response.raise_for_status()
+    return response.json()["prediction"]
+
+
 st.title("Prédiction de la consommation d'énergie des maisons")
 st.write("Saisissez les caractéristiques du quartier pour obtenir une estimation.")
 
@@ -31,9 +39,7 @@ with col2:
     )
 
     nb_occupants = st.number_input("Nombre d'occupants du logement", value=3, step=1)
-
     zone_climatique = st.selectbox("Zone climatique", ["H1", "H2", "H3"])
-
     etiquette_dpe = st.selectbox("Étiquette DPE", ["A", "B", "C", "D", "E", "F", "G"])
 
 
@@ -50,11 +56,7 @@ if st.button("Calculer l'estimation", type="primary"):
     }
 
     try:
-        response = requests.post(
-            "http://127.0.0.1:8000/predict", json=payload, timeout=5
-        )
-        response.raise_for_status()
-        prediction = response.json()["prediction"]
+        prediction = call_api(payload)
 
         st.success(f"### Consommation estimée : {prediction:.2f} 100k")
         st.metric("Estimation", f"{prediction * 100_000:,.0f} $")

@@ -1,14 +1,12 @@
-import sys
 from pathlib import Path
 
 from ml_conso.pipeline import run_pipeline
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(PROJECT_ROOT / "src"))
+TEST_DATA = Path("tests/data/df_preprocessed_sample.csv")
 
 
 def test_pipeline_returns_metrics(tmp_path):
-    metrics = run_pipeline(artifacts_dir=str(tmp_path))
+    metrics = run_pipeline(artifacts_dir=str(tmp_path), data_path=TEST_DATA)
 
     assert "mae" in metrics
     assert "rmse" in metrics

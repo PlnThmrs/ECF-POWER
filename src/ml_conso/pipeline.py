@@ -9,18 +9,24 @@ from ml_conso.features import split_features_target, split_train_test
 from ml_conso.train import train_model
 
 
-def run_pipeline(artifacts_dir: str = "artifacts") -> dict:
-    """Exécute le pipeline ML complet en local."""
+def run_pipeline(
+    artifacts_dir: str = "artifacts", data_path: Path | None = None
+) -> dict:
+    """Exécute le pipeline ML complet en local ou en test."""
     artifacts_path = Path(artifacts_dir)
     artifacts_path.mkdir(parents=True, exist_ok=True)
 
-    df = load_df_preprocessed()
+    # Charge le dataset (test ou réel)
+    df = load_df_preprocessed(data_path)
+
+    # Pipeline ML
     X, y = split_features_target(df)
     X_train, X_test, y_train, y_test = split_train_test(X, y)
 
     model = train_model(X_train, y_train)
     metrics = evaluate_model(model, X_test, y_test)
 
+    # Sauvegarde des artefacts
     joblib.dump(model, artifacts_path / "model.joblib")
     with open(artifacts_path / "metrics.json", "w", encoding="utf-8") as file:
         json.dump(metrics, file, indent=2)

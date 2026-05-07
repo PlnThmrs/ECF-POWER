@@ -1,0 +1,11 @@
+pandas
+scikit-learn
+joblib
+
+[dev]
+pytest
+pytest-cov
+ruff
+ipykernel
+httpx
+requests-mock
