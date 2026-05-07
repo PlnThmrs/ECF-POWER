@@ -12,6 +12,9 @@ dependencies = [
     "pandas",
     "scikit-learn",
     "joblib",
+    "fastapi",
+    "uvicorn",
+    "streamlit",
 ]
 
 [project.optional-dependencies]
@@ -22,6 +25,14 @@ dev = [
     "ipykernel",
     "httpx",
     "requests-mock",
+    "black",
+    "bandit",
+    "pandas"
+    "scikit-learn",
+    "joblib",
+    "fastapi",
+    "uvicorn",
+    "streamlit",
 ]
 
 [tool.setuptools.packages.find]
