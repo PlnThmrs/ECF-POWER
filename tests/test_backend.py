@@ -1,7 +1,17 @@
 from fastapi.testclient import TestClient
 
-from backend.app import app
+import backend.app as backend_app
 
+
+# On remplace le modèle AVANT de créer le client
+class FakeModel:
+    def predict(self, df):
+        return [42.0]
+
+
+# On remplace le modèle AVANT d'initialiser l'app
+backend_app.model = FakeModel()
+app = backend_app.app
 client = TestClient(app)
 
 
