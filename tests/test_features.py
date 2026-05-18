@@ -1,24 +1,31 @@
-from pathlib import Path
+import pytest
 
-from common.features import split_features_target, split_train_test
-from training.data import load_df_preprocessed
+from src.features import (
+    TARGET_COLUMN,
+    TOP_FEATURES,
+    select_features,
+    select_target,
+    validate_training_columns,
+)
 
-TEST_DATA = Path("tests/data/df_preprocessed_sample.csv")
+
+def test_feature_configuration_uses_expected_target(sample_df):
+    assert TARGET_COLUMN == "conso_5_usages_ep"
+    assert len(TOP_FEATURES) == 6
+    validate_training_columns(sample_df)
 
 
-def test_split_features_target():
-    df = load_df_preprocessed(path=TEST_DATA)
-    X, y = split_features_target(df)
+def test_select_features_and_target(sample_df):
+    X = select_features(sample_df)
+    y = select_target(sample_df)
 
-    assert "evo_conso_scaled" not in X.columns
+    assert list(X.columns) == TOP_FEATURES
+    assert y.name == TARGET_COLUMN
     assert len(X) == len(y)
 
 
-def test_split_train_test():
-    df = load_df_preprocessed(path=TEST_DATA)
-    X, y = split_features_target(df)
-    X_train, X_test, y_train, y_test = split_train_test(X, y)
+def test_validate_training_columns_reports_missing_column(sample_df):
+    df = sample_df.drop(columns=[TOP_FEATURES[0]])
 
-    assert len(X_train) > len(X_test)
-    assert len(X_train) == len(y_train)
-    assert len(X_test) == len(y_test)
+    with pytest.raises(ValueError, match="Missing required columns"):
+        validate_training_columns(df)

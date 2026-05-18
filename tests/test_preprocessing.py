@@ -1,12 +1,30 @@
-import pandas as pd
+import numpy as np
 
-from training.preprocessing import remove_missing_values
+from src.features import TOP_FEATURES, split_features_target
+from src.preprocessing import ProductionPreprocessor, preprocess_pipeline
 
 
-def test_remove_missing_values():
-    df = pd.DataFrame({"A": [1, 2, None, 4], "B": [None, 2, 3, 4], "C": [1, 2, 3, 4]})
+def test_production_preprocessor_returns_numeric_dataframe(sample_df):
+    X, _ = split_features_target(sample_df)
+    preprocessor = ProductionPreprocessor()
 
-    cleaned_df = remove_missing_values(df)
+    transformed = preprocessor.fit_transform(X)
 
-    assert len(cleaned_df) == 2  # Rows 1 and 3 have no NaN
-    assert not cleaned_df.isnull().any().any()
+    assert list(transformed.columns) == TOP_FEATURES
+    assert transformed.shape == X.shape
+    assert np.isfinite(transformed.to_numpy()).all()
+
+
+def test_preprocess_pipeline_splits_and_transforms(sample_df):
+    X, y = split_features_target(sample_df)
+
+    X_train, X_test, y_train, y_test, preprocessor = preprocess_pipeline(
+        X,
+        y,
+        remove_outliers=False,
+    )
+
+    assert X_train.shape[1] == len(TOP_FEATURES)
+    assert X_test.shape[1] == len(TOP_FEATURES)
+    assert len(y_train) + len(y_test) == len(sample_df)
+    assert isinstance(preprocessor, ProductionPreprocessor)

@@ -1,20 +1,30 @@
-from pathlib import Path
-
-from common.features import split_features_target, split_train_test
-from training.data import load_df_preprocessed
-from training.train import train_model
-
-TEST_DATA = Path("tests/data/df_preprocessed_sample.csv")
+import json
 
 
-def test_train_model():
-    df = load_df_preprocessed(path=TEST_DATA)
-    X, y = split_features_target(df)
-    X_train, X_test, y_train, y_test = split_train_test(X, y)
+import src.train as train_module
 
-    model = train_model(X_train, y_train)
 
-    # Check that a model is returned
+def test_train_creates_production_bundle(sample_df, workspace_tmp_path, monkeypatch):
+    # Override the output directories to use the test workspace
+    monkeypatch.setattr("src.train.METRICS_DIR", workspace_tmp_path)
+    monkeypatch.setattr(
+        "src.train.get_production_model_path",
+        lambda: workspace_tmp_path / "modele.pkl",
+    )
+    monkeypatch.setattr(
+        "src.train.get_latest_model_info_path",
+        lambda: workspace_tmp_path / "model.latest.json",
+    )
+
+    model, preprocessor, metadata = train_module.train(sample_df)
+
     assert model is not None
-    # Check that it has predict method
-    assert hasattr(model, "predict")
+    assert preprocessor is not None
+    assert metadata["best_model"] == "random_forest"
+    assert (workspace_tmp_path / "modele.pkl").exists()
+    assert (workspace_tmp_path / "model.latest.json").exists()
+
+    latest = json.loads(
+        (workspace_tmp_path / "model.latest.json").read_text(encoding="utf-8")
+    )
+    assert latest["model_name"] == "random_forest"
