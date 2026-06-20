@@ -1,3 +1,5 @@
+# Configuration du projet ML_DPE_regression: sera utilisé pour centraliser les chemins, paramètres et fonctions utilitaires liés à la configuration du projet.
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -5,7 +7,7 @@ from pathlib import Path
 # Racine du projet (dossier contenant src/, data/, artifacts/, etc.)
 PROJECT_ROOT: Path = Path(__file__).resolve().parents[1]
 
-# Dossiers principaux
+# Chemin des dossiers principaux
 DATA_DIR: Path = PROJECT_ROOT / "data"
 ARTIFACTS_DIR: Path = PROJECT_ROOT / "artifacts"
 MODELS_DIR: Path = ARTIFACTS_DIR / "models"
@@ -19,10 +21,10 @@ MLFLOW_EXPERIMENT_NAME: str = "prediction-energie-logement"
 
 # Paramètres généraux d’entraînement
 TEST_SIZE: float = 0.2
-RANDOM_STATE: int = 42
+RANDOM_STATE: int = 42 #Graine aléatoire pour la reproductibilité des résultats
 
 # Noms par défaut
-DEFAULT_MODEL_NAME: str = "DPE_model"
+DEFAULT_MODEL_NAME: str = "DPE_model" 
 DEFAULT_PREPROCESSOR_NAME: str = "preprocessor"
 PRODUCTION_MODEL_FILENAME: str = "DPE_model_latest.pkl"
 

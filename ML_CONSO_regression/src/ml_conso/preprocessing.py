@@ -1,19 +1,22 @@
+#Ensemble des actions de standardisation et normalisation
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer, StandardScaler
+#FunctionTransformer : applique une fonction personnalisée
 
+#Calcul du logarithme 
+def log_transform(X): 
+    return np.log1p(np.clip(X, a_min=0, a_max=None)) #clip force les valeurs négatives à 0
 
-def log_transform(X):
-    return np.log1p(np.clip(X, a_min=0, a_max=None))
-
-
+#Calcul du carré pour capturer les relations non linéaires entre les variables explicatives et la cible
 def square_transform(X):
     return np.power(X, 2)
 
-
+#Construction du préprocesseur pour les variables explicatives
+#Permet de traiter les valeurs manquantes par la médiane
 def build_preprocessor():
     sunshine_pipeline = Pipeline(
         steps=[
@@ -52,6 +55,7 @@ def build_preprocessor():
         ]
     )
 
+    #Regroupement de tous les pipelines dans un ColumnTransformer pour appliquer les transformations spécifiques à chaque variable
     preprocessor = ColumnTransformer(
         transformers=[
             ("sunshine", sunshine_pipeline, ["DUREE_ENSOLEILLEMENT"]),

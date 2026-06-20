@@ -4,6 +4,7 @@ from ML_DPE_regression.src.config import DATA_DIR
 
 
 def load_raw_data(filename: str = "dpe_processed_03032026.csv") -> pd.DataFrame:
+    """Charge les données brutes depuis le fichier CSV spécifié."""
     file_path = DATA_DIR / filename
 
     if not file_path.exists():

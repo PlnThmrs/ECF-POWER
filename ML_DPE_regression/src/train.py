@@ -129,7 +129,7 @@ def train(df):
             ensure_ascii=False,
         )
 
-        # -----------------------------
+    # -----------------------------
     # Log MLflow (compatible Windows)
     # -----------------------------
     mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)

@@ -1,3 +1,6 @@
+# Permet de lancer l'ensemble du pipeline de bout en bout : 
+# chargement des données, sélection des features, split train/test, entraînement du modèle
+# évaluation et sauvegarde du modèle avec MLflow
 from pathlib import Path
 
 import joblib
@@ -15,7 +18,7 @@ from src.ml_conso.pipeline import (
 )
 from src.ml_conso.train import log_experiment
 
-
+# Fonction d'harmonisation des logs
 def log_step(message):
     """Helper to print section headers consistently."""
     print("=" * 60)
