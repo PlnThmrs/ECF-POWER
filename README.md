@@ -1,3 +1,4 @@
+[![CI Pipeline](https://github.com/PlnThmrs/ECF-POWER/actions/workflows/ci.yml/badge.svg)](https://github.com/PlnThmrs/ECF-POWER/actions/workflows/ci.yml)
 # ECF-POWER
 Dépôt du projet fil rouge POWER formation M2i-FD1125
 =======
