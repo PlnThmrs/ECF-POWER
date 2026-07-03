@@ -1,13 +1,10 @@
 [![CI Pipeline](https://github.com/PlnThmrs/ECF-POWER/actions/workflows/ci.yml/badge.svg)](https://github.com/PlnThmrs/ECF-POWER/actions/workflows/ci.yml)
 # ECF-POWER
 Dépôt du projet fil rouge POWER formation M2i-FD1125
-=======
-# Projet ML industrialisé
+
 
 ## Installation
-- `python -m venv .venv`
-- `source .venv/bin/activate`
-- `pip install -r requirements.txt`
+Le projet nécessite pour fonctionner l'entraînement du modèle de machine à partir des jeux de données collectées non présentes dans ce dépôt.
 
 ## Tests
 `pytest -v`
@@ -18,7 +15,6 @@ Dépôt du projet fil rouge POWER formation M2i-FD1125
 - `bandit -r .\api\ .\ML_CONSO_regression\src\ .\ML_DPE_regression\src\ -ll`
 
 ## Lancement
-- Ouvrir powershell dans le dossier : `.venv/bin/activate`
-- Lancer le backend : `uvicorn api.backend.app:app --reload`
-- Ouvrir un autre powershell dans le même dossier : `.venv/bin/activate`
-- Lancer le frontend : `streamlit run api/frontend/streamlit_app.py`
+- Activer Docker (Docker Desktop ou autre)
+- Lancer le docker compose : `docker compose up --build`
+- Ouvrir le navigateur à l'adresse indiquée par streamlit
