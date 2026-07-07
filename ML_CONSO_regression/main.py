@@ -1,4 +1,4 @@
-# Permet de lancer l'ensemble du pipeline de bout en bout : 
+# Permet de lancer l'ensemble du pipeline de bout en bout :
 # chargement des données, sélection des features, split train/test, entraînement du modèle
 # évaluation et sauvegarde du modèle avec MLflow
 from pathlib import Path
@@ -6,7 +6,6 @@ from pathlib import Path
 import joblib
 import mlflow
 import mlflow.sklearn
-
 from src.ml_conso.data import load_data
 from src.ml_conso.evaluate import evaluate_model
 from src.ml_conso.features import select_features, split_data
@@ -17,6 +16,7 @@ from src.ml_conso.pipeline import (
     save_model_version,
 )
 from src.ml_conso.train import log_experiment
+
 
 # Fonction d'harmonisation des logs
 def log_step(message):

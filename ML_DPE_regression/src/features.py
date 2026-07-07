@@ -4,7 +4,7 @@ from typing import Iterable, Tuple
 
 import pandas as pd
 
-#import des chemins de configuration pour les dossiers de données et d'artéfacts
+# import des chemins de configuration pour les dossiers de données et d'artéfacts
 from ML_DPE_regression.src.config import (
     ARTIFACTS_DIR,
     DATA_DIR,
@@ -16,9 +16,9 @@ from ML_DPE_regression.src.config import (
 # -----------------------------
 # Définition des features
 # -----------------------------
-#sélection de la variable cible
+# sélection de la variable cible
 TARGET_COLUMN: str = "conso_5_usages_ep"
-#Sélection des features principales pour le modèle
+# Sélection des features principales pour le modèle
 TOP_FEATURES: list[str] = [
     "etiquette_dpe",
     "surface_habitable_logement",

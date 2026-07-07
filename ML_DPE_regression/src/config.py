@@ -21,10 +21,10 @@ MLFLOW_EXPERIMENT_NAME: str = "prediction-energie-logement"
 
 # Paramètres généraux d’entraînement
 TEST_SIZE: float = 0.2
-RANDOM_STATE: int = 42 #Graine aléatoire pour la reproductibilité des résultats
+RANDOM_STATE: int = 42  # Graine aléatoire pour la reproductibilité des résultats
 
 # Noms par défaut
-DEFAULT_MODEL_NAME: str = "DPE_model" 
+DEFAULT_MODEL_NAME: str = "DPE_model"
 DEFAULT_PREPROCESSOR_NAME: str = "preprocessor"
 PRODUCTION_MODEL_FILENAME: str = "DPE_model_latest.pkl"
 

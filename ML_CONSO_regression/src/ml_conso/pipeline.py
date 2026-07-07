@@ -5,12 +5,13 @@ from pathlib import Path
 import joblib
 from sklearn.pipeline import Pipeline
 
-#Import de toutes les fonctions développées dans les autres modules du projet
+# Import de toutes les fonctions développées dans les autres modules du projet
 from src.ml_conso.data import load_data
 from src.ml_conso.evaluate import evaluate_model
 from src.ml_conso.features import select_features, split_data
 from src.ml_conso.preprocessing import build_preprocessor
 from src.ml_conso.train import build_model
+
 
 # Construction du pipeline complet : prétraitement + modèle
 def build_pipeline():
@@ -22,7 +23,8 @@ def build_pipeline():
 
     return pipeline
 
-#sauvegarde d'une version du modèle avec ses métriques d'évaluation associées
+
+# sauvegarde d'une version du modèle avec ses métriques d'évaluation associées
 def save_model_version(model, metrics: dict, version: str, artifact_dir="artifacts"):
     artifact_dir = Path(artifact_dir)
     models_dir = artifact_dir / "models"
@@ -41,7 +43,8 @@ def save_model_version(model, metrics: dict, version: str, artifact_dir="artifac
 
     return {"model": model_path, "metrics": metrics_path}
 
-#fonction pour activer une version spécifique du modèle en copiant les fichiers correspondants vers des chemins "latest" pour une utilisation facile dans le backend et le frontend
+
+# fonction pour activer une version spécifique du modèle en copiant les fichiers correspondants vers des chemins "latest" pour une utilisation facile dans le backend et le frontend
 def activate_model_version(version: str, artifact_dir="artifacts"):
     artifact_dir = Path(artifact_dir)
     model_path = artifact_dir / "models" / f"conso_model_{version}.joblib"
@@ -49,14 +52,14 @@ def activate_model_version(version: str, artifact_dir="artifacts"):
     latest_model_path = artifact_dir / "models" / "conso_model_latest.joblib"
     latest_metrics_path = artifact_dir / "metrics" / "conso_metrics_latest.json"
 
-    #Traitement des erreurs potentielles
+    # Traitement des erreurs potentielles
     if not model_path.exists():
         raise FileNotFoundError(f"Modele introuvable : {model_path}")
 
     if not metrics_path.exists():
         raise FileNotFoundError(f"Metriques introuvables : {metrics_path}")
 
-    #Création des répertoires "latest" s'ils n'existent pas déjà
+    # Création des répertoires "latest" s'ils n'existent pas déjà
     latest_model_path.parent.mkdir(parents=True, exist_ok=True)
     latest_metrics_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -65,7 +68,8 @@ def activate_model_version(version: str, artifact_dir="artifacts"):
 
     return {"model": latest_model_path, "metrics": latest_metrics_path}
 
-#fonction pour charger le modèle "latest" pour une utilisation dans le backend et le frontend
+
+# fonction pour charger le modèle "latest" pour une utilisation dans le backend et le frontend
 def load_latest_model(artifact_dir="artifacts"):
     model_path = Path(artifact_dir) / "models" / "conso_model_latest.joblib"
 
@@ -74,7 +78,8 @@ def load_latest_model(artifact_dir="artifacts"):
 
     return joblib.load(model_path)
 
-#fonction pour exporter un "contrat" de modèle décrivant les caractéristiques du modèle et les chemins d'accès aux artefacts 
+
+# fonction pour exporter un "contrat" de modèle décrivant les caractéristiques du modèle et les chemins d'accès aux artefacts
 # pour une utilisation dans le backend et le frontend
 def export_model_contract(feature_names, artifact_dir="artifacts"):
     artifact_dir = Path(artifact_dir)
@@ -95,7 +100,8 @@ def export_model_contract(feature_names, artifact_dir="artifacts"):
 
     return contract_path
 
-#Lancement du pipeline
+
+# Lancement du pipeline
 def run_pipeline():
     df = load_data()
     df = select_features(df)

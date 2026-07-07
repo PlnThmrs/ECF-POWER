@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import unicodedata #standardisation des chaînes de caractères pour le mapping catégoriel
+import unicodedata  # standardisation des chaînes de caractères pour le mapping catégoriel
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -18,7 +18,7 @@ from ML_DPE_regression.src.preprocessing_mappings import MAPPING_TYPE_GENERATEUR
 # 1. MAPPINGS CATEGORIELS
 # ============================================================
 
-ETIQUETTE_MAP = { #%Mapping pour convertir les étiquettes DPE en valeurs numériques
+ETIQUETTE_MAP = {  # %Mapping pour convertir les étiquettes DPE en valeurs numériques
     "a": 1,
     "b": 2,
     "c": 3,
@@ -27,40 +27,48 @@ ETIQUETTE_MAP = { #%Mapping pour convertir les étiquettes DPE en valeurs numér
     "f": 6,
     "g": 7,
 }
-TYPE_BATIMENT_MAP = {"appartement": 0, "maison": 1} #Mapping pour convertir les types de bâtiments en valeurs numériques
+TYPE_BATIMENT_MAP = {
+    "appartement": 0,
+    "maison": 1,
+}  # Mapping pour convertir les types de bâtiments en valeurs numériques
 QUALITE_ISO_MAP = {"insuffisante": 1, "moyenne": 2, "bonne": 3, "très bonne": 4}
 
-MAPPING_PERIODE_TO_ANNEE = { #Mapping pour convertir les périodes de construction en années approximatives
-    "avant 1948": 1923,
-    "1948-1974": 1961,
-    "1975-1977": 1975,
-    "1978-1982": 1980,
-    "1983-1988": 1985,
-    "1989-2000": 1995,
-    "2001-2005": 2003,
-    "2006-2012": 2009,
-    "2013-2021": 2017,
-    "après 2021": 2022,
-    "aprÃ¨s 2021": 2022,
-}
+MAPPING_PERIODE_TO_ANNEE = (
+    {  # Mapping pour convertir les périodes de construction en années approximatives
+        "avant 1948": 1923,
+        "1948-1974": 1961,
+        "1975-1977": 1975,
+        "1978-1982": 1980,
+        "1983-1988": 1985,
+        "1989-2000": 1995,
+        "2001-2005": 2003,
+        "2006-2012": 2009,
+        "2013-2021": 2017,
+        "après 2021": 2022,
+        "aprÃ¨s 2021": 2022,
+    }
+)
 
 
 # ============================================================
 # 2. FONCTIONS UTILITAIRES
 # ============================================================
 
-#Normalisation des chaînes de caractères pour le mapping catégoriel
-def normalize_text(value) -> str: 
+
+# Normalisation des chaînes de caractères pour le mapping catégoriel
+def normalize_text(value) -> str:
     if pd.isna(value):
         return "unknown"
     normalized = unicodedata.normalize("NFKD", str(value).lower())
     return "".join(c for c in normalized if not unicodedata.combining(c)).strip()
 
-#Mapping des colonnes catégorielles en valeurs numériques selon les dictionnaires définis ci-dessus
+
+# Mapping des colonnes catégorielles en valeurs numériques selon les dictionnaires définis ci-dessus
 def map_categorical(series: pd.Series, mapping: dict[str, int], default: int = 0):
     return series.map(lambda v: mapping.get(normalize_text(v), default)).astype(float)
 
-#Remplissage des valeurs manquantes pour la colonne "annee_construction" en utilisant la colonne "periode_construction" si disponible
+
+# Remplissage des valeurs manquantes pour la colonne "annee_construction" en utilisant la colonne "periode_construction" si disponible
 def impute_annee_construction(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
     if "periode_construction" in df.columns:
@@ -72,13 +80,15 @@ def impute_annee_construction(df: pd.DataFrame) -> pd.DataFrame:
         )
     return df
 
-#Remplace les valeurs manquantes dans la colonne "type_generateur_n1_ecs_n1" par une valeur par défaut
+
+# Remplace les valeurs manquantes dans la colonne "type_generateur_n1_ecs_n1" par une valeur par défaut
 def clean_type_generateur(series: pd.Series) -> pd.Series:
     return series.replace(MAPPING_TYPE_GENERATEUR).fillna(
         "Système de production d'ecs non électrique"
     )
 
-#Suppresion des outliers dans les colonnes numériques spécifiées en utilisant la méthode de l'IQR (Interquartile Range)
+
+# Suppresion des outliers dans les colonnes numériques spécifiées en utilisant la méthode de l'IQR (Interquartile Range)
 def remove_outliers_iqr(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
     df = df.copy()
     for col in columns:
@@ -95,7 +105,8 @@ def remove_outliers_iqr(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
 # 3. PREPROCESSEUR PRINCIPAL
 # ============================================================
 
-#Ensemble des transformations pour préparer les données pour le modèle de régression.
+
+# Ensemble des transformations pour préparer les données pour le modèle de régression.
 class ProductionPreprocessor:
     def __init__(self):
         self.scaler = StandardScaler()
@@ -124,7 +135,7 @@ class ProductionPreprocessor:
     # -------------------------
     # Étapes internes
     # -------------------------
-    #nettoyage des données brutes et remplissage des années manquantes
+    # nettoyage des données brutes et remplissage des années manquantes
     def _clean_raw(self, X):
         X = X.copy()
         X["type_generateur_n1_ecs_n1"] = clean_type_generateur(
@@ -132,7 +143,8 @@ class ProductionPreprocessor:
         )
         X = impute_annee_construction(X)
         return X
-    #remplissage des valeurs manquantes pour les colonnes numériques et catégorielles lors de l'entraînement
+
+    # remplissage des valeurs manquantes pour les colonnes numériques et catégorielles lors de l'entraînement
     def _fit_missing_values(self, X):
         X = X.copy()
         for col in NUMERIC_FEATURES:
@@ -143,7 +155,8 @@ class ProductionPreprocessor:
         for col in CATEGORICAL_FEATURES:
             X[col] = X[col].fillna("unknown")
         return X
-    #remplissage des valeurs manquantes pour les colonnes numériques et catégorielles lors de la transformation
+
+    # remplissage des valeurs manquantes pour les colonnes numériques et catégorielles lors de la transformation
     def _transform_missing_values(self, X):
         X = X.copy()
         for col in NUMERIC_FEATURES:
@@ -152,7 +165,8 @@ class ProductionPreprocessor:
         for col in CATEGORICAL_FEATURES:
             X[col] = X[col].fillna("unknown")
         return X
-    #encodage des colonnes catégorielles en valeurs numériques lors de l'entraînement
+
+    # encodage des colonnes catégorielles en valeurs numériques lors de l'entraînement
     def _fit_encode(self, X):
         generator_values = X["type_generateur_n1_ecs_n1"].map(normalize_text)
         self.generator_map = {
@@ -161,7 +175,8 @@ class ProductionPreprocessor:
             if val != "unknown"
         }
         return self._transform_encode(X)
-    #encodage des colonnes catégorielles en valeurs numériques lors de la transformation
+
+    # encodage des colonnes catégorielles en valeurs numériques lors de la transformation
     def _transform_encode(self, X):
         X = X.copy()
         X["etiquette_dpe"] = map_categorical(X["etiquette_dpe"], ETIQUETTE_MAP)
@@ -186,7 +201,8 @@ class ProductionPreprocessor:
 # 4. PIPELINE COMPLET
 # ============================================================
 
-#Construction d'un pipeline complet de prétraitement pour l'entraînement et le test du modèle.
+
+# Construction d'un pipeline complet de prétraitement pour l'entraînement et le test du modèle.
 def preprocess_pipeline(X, y, remove_outliers=True):
     missing = [col for col in TOP_FEATURES if col not in X.columns]
     if missing:

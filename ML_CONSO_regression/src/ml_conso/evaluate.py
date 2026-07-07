@@ -1,7 +1,8 @@
 import numpy as np
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-#Calcul des métriques d'évaluation du modèle : RMSE, MAE et R²
+
+# Calcul des métriques d'évaluation du modèle : RMSE, MAE et R²
 def evaluate_model(model, X_test, y_test):
     predictions = model.predict(X_test)
 
@@ -10,14 +11,16 @@ def evaluate_model(model, X_test, y_test):
     mae = mean_absolute_error(y_test, predictions)
 
     r2 = r2_score(y_test, predictions)
-    #Création d'un dictionnaire pour stocker les métriques d'évaluation calculées
+    # Création d'un dictionnaire pour stocker les métriques d'évaluation calculées
     metrics = {"rmse": float(rmse), "mae": float(mae), "r2": float(r2)}
 
     return metrics
 
-#fonction alias
+
+# fonction alias
 def compute_metrics(model, X_test, y_test):
     return evaluate_model(model, X_test, y_test)
+
 
 # Calcul de l'importance des variables
 def compute_feature_importance(model, X, y, feature_names):
